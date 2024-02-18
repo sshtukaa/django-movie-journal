@@ -1,0 +1,39 @@
+{% extends './registration/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h2>Add a Movie</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+    {% if data %}
+        {% if 'Response' in data and data.Response == 'True' %}
+            <h2>Search Results</h2>
+            <ul class="movies-list">
+                {% for movie in data.Search|slice:":3" %}
+                    <li class="movie-item">
+                        <div class="movie-info">
+                            <img src="{{ movie.Poster }}" alt="{{ movie.Title }} Poster" class="movie-poster">
+                            <p>{{ movie.Title }} - {{ movie.Year }}</p>
+                                {% if movie.watched %}
+                                    <button type="submit">Already watched</button>
+                                {% else %}
+                                    <form method="post" action="{% url 'mark_as_watched' movie.imdbID %}" class="save-movie-form">
+                                        {% csrf_token %}
+                                        <button type="submit" class="save-movie-button">Mark as Watched</button>
+                                    </form>
+                                {% endif %}
+                            <form method="get" action="{% url 'movie_detail' movie.imdbID %}" class="movie-detail-form">
+                                <button type="submit" class="movie-detail-button">Details</button>
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h2>No Results Found</h2>
+        {% endif %}
+    {% endif %}
+{% endblock %}

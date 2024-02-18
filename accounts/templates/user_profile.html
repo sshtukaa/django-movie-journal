@@ -1,0 +1,26 @@
+{% extends 'registration/base.html' %}
+
+{% block content %}
+    <section class="user-profile">
+        <h2>User Profile</h2>
+        <div class="user-info">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+        </div>
+        {% if watched_movies %}
+        <div class="watched-movies">
+            <h3>Watched Movies</h3>
+            <ul>
+                {% for movie in watched_movies %}
+                    <li>
+                        <a href="{% url 'movie_detail' movie.movie_id %}">{{ movie.title }} ({{ movie.year }})</a>
+                        <br>
+                        <a href="{% url 'dwm' movie.id %}">Удалить</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <p>No watched movies yet.</p>
+        {% endif %}
+    </section>
+{% endblock %}

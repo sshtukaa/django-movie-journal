@@ -1,0 +1,82 @@
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+main {
+    margin: 20px;
+}
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+.movies-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.movie-item {
+    margin: 20px;
+    text-align: center;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    height: 100%;
+}
+.movie-poster {
+    width: 100%;
+    height: auto;
+}
+.save-movie-form {
+    margin-top: auto;
+}
+.save-movie-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.save-movie-button:hover {
+    background-color: #0056b3;
+}
+.movie-details-container {
+    display: flex;
+    align-items: center; /* Выравнивание элементов по вертикали */
+}
+
+.movie-poster {
+    margin-right: 20px;
+}
+
+.movie-poster img {
+    max-width: 100%; /* Максимальная ширина изображения */
+}
+
+.movie-info {
+    flex: 1;
+}
