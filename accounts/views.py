@@ -5,7 +5,6 @@ from .forms import SearchForm, CustomUserCreationForm
 from .models import Movie, UserProfile
 from django.contrib.auth.decorators import login_required
 from .helper import get_watched_movies, omdbresponse
-import re
 import requests
 def home(request):
     return render(request, 'index.html')
@@ -37,24 +36,26 @@ def user_login(request):
     return render(request, 'registration/login.html', {'form': form})
 @login_required
 def add_movie(request):
-    data = None
-    if request.method == 'POST':
-        form = SearchForm(request.POST)
-        if form.is_valid():
-            search_query = form.cleaned_data['search_query']
-            year_match = re.search(r'\b\d{4}\b', search_query)
-            if year_match:
-                year = year_match.group()
-                title = search_query.replace(year, '').strip()
-                response = omdbresponse(f"{title}&y={year}")
-            else:
-                response = omdbresponse(search_query)
-            data = response.json()
-            if data['Response'] == 'True':
-                data['Search'] = sorted(data['Search'], key=lambda x: x['Year'])
-    else:
-        form = SearchForm()
-    return render(request, 'add_movie.html', {'form': form, 'data': data, 'watched_movies': get_watched_movies(request.user, data)})
+    try:
+        data = None
+        if request.method == 'POST':
+            form = SearchForm(request.POST)
+            if form.is_valid():
+                search_query = form.cleaned_data['search_query']
+                year = form.cleaned_data.get('year', '')
+                search_type = form.cleaned_data.get('search_type', 'movie')
+                omdb_url = f"http://www.omdbapi.com/?apikey=400bc237&s={search_query}&type={search_type}"
+                if year:
+                    omdb_url += f'&y={year}'
+                response = requests.get(omdb_url)
+                data = response.json()
+                if data['Response'] == 'True':
+                    data['Search'] = sorted(data['Search'], key=lambda x: x['Year'])
+        else:
+            form = SearchForm()
+        return render(request, 'add_movie.html', {'form': form, 'data': data, 'watched_movies': get_watched_movies(request.user, data)})
+    except Exception as e:
+        return redirect("add_movie")
 @login_required
 def mark_as_watched(request, movie_id):
     user = request.user
@@ -79,7 +80,6 @@ def mark_as_watched(request, movie_id):
 def movie_details(request, imdbID):
     response = omdbresponse(imdbID, "i")
     movie_data = response.json()
-    print(movie_data)
     return render(request, 'movie_details.html', {'imdbID': imdbID, 'movie_data': movie_data, 'watched_movies': get_watched_movies(request.user, movie_data)})
 @login_required
 def user_profile(request):

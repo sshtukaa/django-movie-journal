@@ -14,7 +14,7 @@
                     <li>
                         <a href="{% url 'movie_detail' movie.movie_id %}">{{ movie.title }} ({{ movie.year }})</a>
                         <br>
-                        <a href="{% url 'dwm' movie.id %}">Удалить</a>
+                        <a href="{% url 'dwm' movie.id %}">Delete</a>
                     </li>
                 {% endfor %}
             </ul>

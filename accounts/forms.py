@@ -2,7 +2,14 @@ from django import forms
 from .models import CustomUser
 from django.contrib.auth.forms import UserCreationForm
 class SearchForm(forms.Form):
-    search_query = forms.CharField(label='Search', max_length=100)
+    SEARCH_CHOICES = [
+        ('movie', 'Movie'),
+        ('series', 'Series'),
+        ('episode', 'Episode'),
+    ]
+    search_query = forms.CharField(label='Search by Title', required=False)
+    year = forms.CharField(label='Search by year', required=False)
+    search_type = forms.ChoiceField(label='Search Type', choices=SEARCH_CHOICES, required=False, widget=forms.RadioSelect)
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser

@@ -12,10 +12,14 @@
         {% if 'Response' in data and data.Response == 'True' %}
             <h2>Search Results</h2>
             <ul class="movies-list">
-                {% for movie in data.Search|slice:":3" %}
+                {% for movie in data.Search|slice:":5" %}
                     <li class="movie-item">
                         <div class="movie-info">
-                            <img src="{{ movie.Poster }}" alt="{{ movie.Title }} Poster" class="movie-poster">
+                            {% if movie.Poster != "N/A" %}
+                                <img src="{{ movie.Poster }}" alt="{{ movie.Title }} Poster" class="movie-poster">
+                            {% else %}
+                                <img src="{% static 'img/placeholder_poster.webp'%}" alt="Not found {{ movie.Title }} Poster" class="movie-poster">
+                            {% endif %}
                             <p>{{ movie.Title }} - {{ movie.Year }}</p>
                                 {% if movie.watched %}
                                     <button type="submit">Already watched</button>
