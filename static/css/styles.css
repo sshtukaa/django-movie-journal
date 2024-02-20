@@ -1,35 +1,76 @@
+  html,
+  body {
+    height: 100%;
+  }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    min-height: 100vh;  
+    position: relative;
+}
+.wrapper {
+    position: relative;
+    min-height: 100%;
+}
+.content {
+    padding-bottom: 90px;
+}
+.footer {
+    position: absolute;
+    background-color:#333;
+    text-align: center;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 80px;
+}
+.footer p {
+    margin-top:2%;
+    color: white;
+}
 header {
     background-color: #333;
     color: #fff;
-    padding: 20px 0;
+    padding: 20px;
     text-align: center;
-}
-
-header h1 {
-    margin: 0;
 }
 nav ul {
     list-style-type: none;
     padding: 0;
 }
-
 nav ul li {
     display: inline;
     margin-right: 20px;
 }
-
 nav ul li a {
     color: #fff;
     text-decoration: none;
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    transition: transform 0.3s, background-color 0.3s, border-color 0.3s;
+}
+nav ul li a:hover {
+    transform: scale(1.05);
+    background-color: rgba(0, 0, 0, 0.2);
+    border-color: #333;
 }
 main {
-    margin: 20px;
+    padding: 20px;
+}
+.container {
+    max-width: 960px;
+    margin: 0 auto;
 }
 footer {
     background-color: #333;
     color: #fff;
-    padding: 20px 0;
     text-align: center;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 .movies-list {
     list-style-type: none;
@@ -66,17 +107,14 @@ footer {
 }
 .movie-details-container {
     display: flex;
-    align-items: center; /* Выравнивание элементов по вертикали */
+    align-items: center;
 }
-
 .movie-poster {
     margin-right: 20px;
 }
-
 .movie-poster img {
-    max-width: 100%; /* Максимальная ширина изображения */
+    max-width: 100%;
 }
-
 .movie-info {
     flex: 1;
 }

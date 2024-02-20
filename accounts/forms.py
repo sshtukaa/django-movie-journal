@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser
+from .models import CustomUser, UserMovieRating
 from django.contrib.auth.forms import UserCreationForm
 class SearchForm(forms.Form):
     SEARCH_CHOICES = [
@@ -14,3 +14,7 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser
         fields = ('username',)
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = UserMovieRating
+        fields = ['rating']

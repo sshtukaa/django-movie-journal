@@ -1,8 +1,8 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import SearchForm, CustomUserCreationForm
-from .models import Movie, UserProfile
+from .forms import SearchForm, CustomUserCreationForm, RatingForm
+from .models import Movie, UserProfile, UserMovieRating
 from django.contrib.auth.decorators import login_required
 from .helper import get_watched_movies, omdbresponse
 import requests
@@ -78,9 +78,26 @@ def mark_as_watched(request, movie_id):
     return redirect('add_movie')
 @login_required
 def movie_details(request, imdbID):
+    user = request.user
+    form = RatingForm(request.POST or None)
+    try:
+        rating = UserMovieRating.objects.get(user=user, movie_id=imdbID)
+    except UserMovieRating.DoesNotExist:
+        rating = None
+    if request.method == 'POST' and form.is_valid():
+        user_rating = form.cleaned_data['rating']
+        if rating:
+            rating.rating = user_rating
+            rating.save()
+        else:
+            rating = UserMovieRating.objects.create(
+                user=user,
+                movie_id=imdbID,
+                rating=user_rating
+            )
     response = omdbresponse(imdbID, "i")
     movie_data = response.json()
-    return render(request, 'movie_details.html', {'imdbID': imdbID, 'movie_data': movie_data, 'watched_movies': get_watched_movies(request.user, movie_data)})
+    return render(request, 'movie_details.html', {'imdbID': imdbID, 'movie_data': movie_data, 'watched_movies': get_watched_movies(request.user, movie_data), 'rating': rating, 'form': form})
 @login_required
 def user_profile(request):
     user = request.user

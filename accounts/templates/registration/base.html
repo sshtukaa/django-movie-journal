@@ -9,28 +9,30 @@
     <script src="{% static 'js/scripts.js' %}"></script>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Kinojournal</h1>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'add_movie' %}">Add Movie</a></li>
-                    <li><a href="{% url 'profile' %}">Profile</a></li>
-                    <li><a href="{% url 'logout' %}">Log out</a></li>
-                {% else %}
-                    <li><a href="{% url 'register' %}">Register</a></li>
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </header>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-    <footer>
-        <p>© 2024 Kinojournal</p>
-    </footer>
+    <div class="wrapper">
+        <div class="content">
+        <header>
+            <h1>Welcome to Kinojournal</h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'add_movie' %}">Add Movie</a></li>
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Log out</a></li>
+                    {% else %}
+                        <li><a href="{% url 'register' %}">Register</a></li>
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+        </div>
+        <div class="footer"><p>by sshtukaa</p></div>
+    </div>
 </body>
 </html>

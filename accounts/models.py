@@ -13,6 +13,13 @@ class Movie(models.Model):
     year = models.IntegerField()
 
     def __str__(self):
-        return self.title+" "+str(self.year)
+        return f"{self.title} ({str(self.year)})"
 class CustomUser(AbstractUser):
     pass
+class UserMovieRating(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    movie_id = models.CharField(max_length=50)
+    rating = models.DecimalField(max_digits=3, decimal_places=1)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.movie_id}: {self.rating}"

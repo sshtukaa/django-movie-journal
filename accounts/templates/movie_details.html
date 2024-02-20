@@ -2,30 +2,37 @@
 {% load static %}
 
 {% block content %}
-    <div>
-        {% if movie_data.Poster != "N/A" %}
-            <img src="{{ movie_data.Poster }}" alt="{{ movie.Title }} Poster">
-        {% else %}
-            <img src="{% static 'img/placeholder_poster.webp'%}" alt="Not found {{ movie_Data.Title }} Poster">
-        {% endif %}
-        <h2>{{ movie_data.Title }}</h2>
-        <p><b>Runtime:</b> {{movie_data.Runtime}}.</p>
-        <p><b>Released:</b> {{movie_data.Released}}.</p>
-        <p><b>Genre:</b> {{ movie_data.Genre }}.</p>
-        <p><b>Director:</b> {{ movie_data.Director }}.</p>
-        <p><b>Actors:</b> {{movie_data.Actors}}.</p>
-        <br>
-        <h2>Ratings</h2>
-        {% for rating in movie_data.Ratings %}
-            <p><b>{{rating.Source}}</b>: {{rating.Value}}.</p>
-        {% endfor %}
-        {% if movie_data.watched %}
-            <button type="submit">Already watched</button>
-            {% else %}
-                <form method="post" action="{% url 'mark_as_watched' movie_data.imdbID %}" class="save-movie-form">
-                {% csrf_token %}
-                <button type="submit" class="save-movie-button">Mark as Watched</button>
-              </form>
-        {% endif %}
-    </div>
+<div>
+    {% if movie_data.Poster != "N/A" %}
+        <img src="{{ movie_data.Poster }}" alt="{{ movie_data.Title }} Poster">
+    {% else %}
+        <img src="{% static 'img/placeholder_poster.webp' %}" alt="Not found {{ movie_Data.Title }} Poster">
+    {% endif %}
+    <h2>{{ movie_data.Title }}</h2>
+    <p><b>Runtime:</b> {{movie_data.Runtime}}.</p>
+    <p><b>Released:</b> {{movie_data.Released}}.</p>
+    <p><b>Genre:</b> {{ movie_data.Genre }}.</p>
+    <p><b>Director:</b> {{ movie_data.Director }}.</p>
+    <p><b>Actors:</b> {{movie_data.Actors}}.</p>
+    <br>
+    <h2>Ratings</h2>
+    {% for rating in movie_data.Ratings %}
+        <p><b>{{rating.Source}}</b>: {{rating.Value}}.</p>
+    {% endfor %}
+    <h2>Your Rating</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="rating" data-value="{% if rating %}{{ rating.rating }}{% else %}0{% endif %}"></div>
+        <input type="range" name="rating" id="rating-value" min="0" max="5" step="0.5" value="{% if rating %}{{ rating.rating }}{% else %}0{% endif %}">
+        <button type="submit" class="btn btn-primary">Submit Rating</button>
+    </form>
+    {% if movie_data.watched %}
+        <h3>Already watched</h3>
+    {% else %}
+        <form method="post" action="{% url 'mark_as_watched' movie_data.imdbID %}" class="save-movie-form">
+            {% csrf_token %}
+            <button type="submit" class="save-movie-button">Mark as Watched</button>
+        </form>
+    {% endif %}
+</div>
 {% endblock %}
