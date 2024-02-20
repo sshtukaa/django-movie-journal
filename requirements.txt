@@ -1,0 +1,4 @@
+Django==3.2.10
+omdb-client==0.0.12
+django-bootstrap4==3.0.1
+django-crispy-forms==1.13.0
